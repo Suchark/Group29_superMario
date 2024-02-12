@@ -95,8 +95,6 @@
 #define REST      0
 
 int tempo = 200;
-
-// change this to whichever pin you want to use
 int buzzer = 13;
 
 
@@ -180,26 +178,21 @@ int melody[] = {
   NOTE_B4,8, NOTE_F5,4, NOTE_F5,8, NOTE_F5,-8, NOTE_E5,-8, NOTE_D5,-8,
   NOTE_C5,8, NOTE_E4,4, NOTE_E4,8, NOTE_C4,2,
   
-  //game over sound
-  NOTE_C5,-4, NOTE_G4,-4, NOTE_E4,4, //45
+  NOTE_C5,-4, NOTE_G4,-4, NOTE_E4,4, 
   NOTE_A4,-8, NOTE_B4,-8, NOTE_A4,-8, NOTE_GS4,-8, NOTE_AS4,-8, NOTE_GS4,-8,
   NOTE_G4,8, NOTE_D4,8, NOTE_E4,-2,  
 
 };
 
 int notes = sizeof(melody) / sizeof(melody[0]) / 2;
-
-// this calculates the duration of a whole note in ms
 int wholenote = (60000 * 4) / tempo;
 int divider = 0, noteDuration = 0;
 
 void setup() {
   for (int thisNote = 0; thisNote < notes * 2; thisNote = thisNote + 2) {
 
-    // calculates the duration of each note
     divider = melody[thisNote + 1];
     if (divider > 0) {
-      // regular note, just proceed
       noteDuration = (wholenote) / divider;
     } else if (divider < 0) {
   
@@ -207,7 +200,6 @@ void setup() {
       noteDuration *= 1.5; 
     }
 
-    // we only play the note for 90% of the duration, leaving 10% as a pause
     tone(buzzer, melody[thisNote], noteDuration * 0.9);
 
     delay(noteDuration);
@@ -215,10 +207,9 @@ void setup() {
   }
 }
 
-int repeatCount = 0; // เพิ่มตัวแปรนับจำนวนครั้งที่ทำการทำซ้ำเพลง
+int repeatCount = 0; 
 
 void loop() {
-  // ทำการเริ่มจังหวะที่ 200 ตามโค้ดที่ให้ไปข้างต้นสำหรับครั้งแรก
   if (repeatCount == 0) {
     for (int thisNote = 0; thisNote < notes * 2; thisNote = thisNote + 2) {
       divider = melody[thisNote + 1];
@@ -233,9 +224,8 @@ void loop() {
       noTone(buzzer);
     }
   } else {
-    // เพิ่มความเร็วของเพลงที่เล่นเรื่อยๆ ในการทำซ้ำครั้งถัดไป
-    tempo -= 20; // ลดค่า tempo เพื่อให้เพลงเล่นเร็วขึ้น
-    wholenote = (60000 * 4) / tempo; // คำนวณค่า wholenote ใหม่
+    tempo -= 20; 
+    wholenote = (60000 * 4) / tempo; 
 
     for (int thisNote = 0; thisNote < notes * 2; thisNote = thisNote + 2) {
       divider = melody[thisNote + 1];
@@ -251,13 +241,11 @@ void loop() {
     }
   }
 
-  repeatCount++; // เพิ่มจำนวนครั้งที่ทำการทำซ้ำเพลง
+  repeatCount++; 
 
-  // หากทำการทำซ้ำเพลงครบ 5 ครั้งให้ reset ค่าเพื่อเริ่มต้นใหม่
   if (repeatCount == 5) {
     repeatCount = 0;
-    // รีเซ็ตค่า tempo ให้กลับมาเป็น 200 เพื่อเริ่มเพลงใหม่ในครั้งถัดไป
     tempo = 200;
-    wholenote = (60000 * 4) / tempo; // คำนวณค่า wholenote ใหม่
+    wholenote = (60000 * 4) / tempo; 
   }
 }
